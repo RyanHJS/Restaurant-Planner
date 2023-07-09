@@ -21,7 +21,6 @@ export default function PlaceSearch() {
           server.url + "/googleMaps/details/" + placeId
         );
         console.log("restaurant info: " + JSON.stringify(response.data));
-
         setRestaurantInfo({ placeId: placeId, ...response.data });
       } catch (e) {
         console.log(e);

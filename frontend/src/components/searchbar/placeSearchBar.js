@@ -3,6 +3,9 @@ import React, { useState, useMemo } from "react";
 import PlacesAutocomplete from "react-places-autocomplete";
 
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
 // import {
 //   geocodeByAddress,
 //   geocodeByPlaceId,
@@ -45,6 +48,10 @@ export default function PlacesSearchBar({ setPlace, setVisible }) {
     clearSuggestions();
   };
 
+  const handleCancel = () => {
+    setInput("");
+  };
+
   const searchOptions = {
     types: ["restaurant"],
     componentRestrictions: {
@@ -64,47 +71,51 @@ export default function PlacesSearchBar({ setPlace, setVisible }) {
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <div>
-          <Form.Control
-            {...getInputProps({
-              placeholder: "Search Restaurants...",
-              className: "location-search-input",
-            })}
-            size="md"
-            type="text"
-          />
+          <InputGroup>
+            <Form.Control
+              {...getInputProps({
+                placeholder: "Search Restaurants...",
+                className: "location-search-input",
+              })}
+              size="md"
+              type="text"
+            />
+            <Button variant="outline-danger" onClick={handleCancel}>
+              X
+            </Button>
+          </InputGroup>
 
           {!resultsExist && input.length > 0 ? (
             <div>
-              <span>No results found.</span>
+              <ListGroup>
+                <ListGroup.Item>No results found.</ListGroup.Item>
+              </ListGroup>
             </div>
           ) : (
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion) => {
-                const className = suggestion.active
-                  ? "suggestion-item--active"
-                  : "suggestion-item";
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                  : { backgroundColor: "#ffffff", cursor: "pointer" };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    {/* todo: Make List layoutto show all suggestions*/}
-                    <span>{suggestion.description}</span>
-                    <p>{suggestion.placeId}</p>
-                    <p>{suggestion.types}</p>
-                    <p>rating: {suggestion.rating}</p>
-                    {setPlaceId(suggestion.placeId)}
-                  </div>
-                );
-              })}
-            </div>
+            <>
+              <ListGroup>
+                {loading && <div>Loading...</div>}
+                {suggestions.map((suggestion) => {
+                  const className = suggestion.active
+                    ? "suggestion-item--active"
+                    : "suggestion-item";
+                  // inline style for demonstration purpose
+                  const style = suggestion.active
+                    ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                    : { backgroundColor: "#ffffff", cursor: "pointer" };
+                  return (
+                    <ListGroup.Item
+                      {...getSuggestionItemProps(suggestion, {
+                        className,
+                        style,
+                      })}
+                    >
+                      {suggestion.description}
+                    </ListGroup.Item>
+                  );
+                })}
+              </ListGroup>
+            </>
           )}
         </div>
       )}
