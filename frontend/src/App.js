@@ -5,6 +5,13 @@ import Home from "./pages/Home";
 import { useEffect, useState } from "react";
 import EventForm from "./components/form/EventForm";
 import EventsList from "./components/EventsList";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Access from "./pages/Access";
+
+// test
+import PlaceSearch from "./pages/test/PlaceSearch";
+import Voting from "./pages/test/Voting";
 
 function App() {
 
@@ -50,16 +57,14 @@ function App() {
   }, []);
 
   return (
-
-    <div className="bg-gray-200 flex flex-col items-center justify-center h-screen">
-      <EventForm title="Create Event" onSave={handleSaveEvent} />
-      <EventsList eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} onUpdate={handleUpdateEvent} />
-    </div>
-
-    // <Routes>
-    //   <Event />
-    //   <Route path="/" element={<Home />} />
-    // </Routes>
+    <Routes>
+      <Route path="/" element={<Access />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/test/searchplace" element={<PlaceSearch />} />
+      <Route path="/test/Voting" element={<Voting />} />
+    </Routes>
   );
 }
 

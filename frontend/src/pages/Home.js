@@ -1,10 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import Button from "react-bootstrap/esm/Button";
+import Row from "react-bootstrap/Row";
+
+import { useNavigate } from "react-router-dom";
 
 function Home(props) {
+  const [name, setName] = useState("Tester React");
+
+  const navigate = useNavigate();
+
+  const handleHostEvent = () => {
+    navigate("/createEvent"); // Todo: front-end route to create event form
+  };
   return (
-    <div>
-      <p>THIS IS THE HOME PAGE.</p>
-    </div>
+    <>
+      <div className="w-100 bg-primary-subtle">
+        <h1 className="display-3 text-center p-3">Restaurant Planner</h1>
+      </div>
+
+      <div className="d-flex justify-content-center">
+        <Row className="mt-5">
+          <h2>Welcome, {name}!</h2>
+        </Row>
+      </div>
+
+      <div className="d-flex justify-content-center">
+        <Row className="mt-5">
+          <Button type="button" className="btn btn-info p-3">
+            Host an event
+          </Button>
+        </Row>
+      </div>
+
+      <div className="container mt-5">
+        <h3>My Events</h3>
+        {/* TODO: Make a list of events that user has */}
+      </div>
+    </>
   );
 }
 

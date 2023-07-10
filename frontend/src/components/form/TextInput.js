@@ -16,7 +16,7 @@ const TextInput = ({ label, name, id, value, onChange }) => {
             </label>
 
             <textarea
-                className="resize rounded-md border border-black form-input max-w-xs"
+                className="resize rounded-md border border-black form-input max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                 name={name}
                 id={id}
                 value={value}
