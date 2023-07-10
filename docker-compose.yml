@@ -1,14 +1,14 @@
 version: "3"
 
 services:
-  # frontend:
-  #   image: "restaurant-planner-frontend:latest"
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  
+  frontend:
+    image: "restaurant-planner-frontend:latest"
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+
   backend:
     # Setting an image name avoids the same image being built multiple times.
     image: "restaurant-planner-backend:latest"
@@ -22,9 +22,8 @@ services:
     depends_on:
       - mysqlDb
     environment:
-      WAIT_HOSTS: mysqlDb:3306    # wait for mysqlDb database to be available  --> implemented in ./backend/Dockerfile
-    
-      
+      WAIT_HOSTS: mysqlDb:3306 # wait for mysqlDb database to be available  --> implemented in ./backend/Dockerfile
+
   # Docker mySql database
   mysqlDb:
     image: mysql
@@ -41,11 +40,7 @@ services:
       - "3306:3306"
     expose:
       - 3306
-      
-      
-      
-      
-      
+
       # ignore this ---v
   # cloudsql:
   #   image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.0.0
@@ -58,5 +53,3 @@ services:
   #     - target: 3306
   #       published: 13306
   #   command: --address 127.0.0.1 --port 3306 --credentials-file "/backend/serviceAccount.json" "cmpt372-project-391818:us-central1:restaurant-planner"
-      
-      
