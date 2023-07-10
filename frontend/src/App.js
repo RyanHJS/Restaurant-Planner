@@ -5,12 +5,14 @@ import Home from "./pages/Home";
 
 // test
 import PlaceSearch from "./pages/test/PlaceSearch";
+import Voting from "./pages/test/Voting";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/test/searchplace" element={<PlaceSearch />} />
+      <Route path="/test/Voting" element={<Voting />} />
     </Routes>
   );
 }

@@ -11,6 +11,8 @@ app.use(
     ],
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 console.log("Starting Server...");
 
@@ -21,8 +23,10 @@ app.get("/", (req, res) => {
 
 const testRoute = require("./api/routes/testRoute");
 const googleMapsRoute = require("./api/routes/googleMapsRoute");
+const votingRoute = require("./api/routes/votingRoute");
 app.use("/test", testRoute);
 app.use("/api/googleMaps", googleMapsRoute);
+app.use("/api/vote", votingRoute);
 
 app.use(cors());
 app.use(express.json());
