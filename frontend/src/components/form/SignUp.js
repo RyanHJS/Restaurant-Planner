@@ -12,8 +12,10 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
+import axios from "axios";
 // My imports
 import { auth } from "../../config/firebase";
+import server from "../../utils/constants/server";
 
 export default function Signup() {
   const [firstname, setFirstname] = useState("");
@@ -51,6 +53,28 @@ export default function Signup() {
     }
   };
 
+  const addUserToDb = async () => {
+    try {
+      const uid = auth.currentUser.uid;
+      let data = {
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+      };
+      let response = await axios.post(
+        server.url + `/users/create/${uid}`,
+        data
+      );
+      if (response.status === 201) {
+        console.log("User created successfully in the database");
+      } else {
+        console.log("User has not been created in the database");
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
   const handleSubmit = async (event) => {
     if (!isValid) {
       console.error("Sign up form validation failed");
@@ -63,6 +87,7 @@ export default function Signup() {
     try {
       await signup();
       // todo: create a user in the backend
+      await addUserToDb();
       console.log("You have successfully signed up.");
       navigate("/login", { replace: true });
     } catch (error) {
