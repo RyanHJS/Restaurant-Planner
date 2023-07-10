@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+// import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
-export default function Login() {
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -66,33 +66,43 @@ export default function Login() {
   };
 
   return (
-    <Form validated={validated} onSubmit={handleSubmit}>
-      {/* First row */}
-      <Row className="mb-3">
-        <Form.Group as={Col} controlId="validationCustomEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            placeholder="Email address"
-            defaultValue=""
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-      </Row>
+    <div className="w-100">
+      <p className=" text-center fs-1 fw-bold mb-5">Login</p>
+      <Form className="w-100" validated={validated} onSubmit={handleSubmit}>
+        {/* First row */}
+        <Row className="mb-4">
+          <Form.Group as={Col}>
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Email address"
+              defaultValue=""
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+        </Row>
 
-      {/* Second row */}
-      <Row className="mb-3">
-        <Form.Label htmlFor="inputPassword">Password</Form.Label>
-        <Form.Control
-          type="password"
-          id="inputPassword"
-          aria-describedby="passwordHelpBlock"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </Row>
+        {/* Second row */}
+        <Row className="mb-4">
+          <Form.Group as={Col}>
+            <Form.Label htmlFor="inputPassword">Password</Form.Label>
+            <Form.Control
+              type="password"
+              id="inputPassword"
+              placeholder="Password"
+              aria-describedby="passwordHelpBlock"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+        </Row>
 
-      <Button type="submit">Login</Button>
-    </Form>
+        <div className="d-flex justify-content-center mt-5 mb-1">
+          <Button className=" text-center px-5 py-2 " type="submit">
+            Login
+          </Button>
+        </div>
+      </Form>
+    </div>
   );
 }

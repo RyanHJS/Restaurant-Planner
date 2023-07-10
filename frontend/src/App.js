@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 
 // Page imports
 import Home from "./pages/Home";
-import Signup from "./components/form/Signup";
-import Login from "./components/form/Login";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 // test
 import PlaceSearch from "./pages/test/PlaceSearch";
