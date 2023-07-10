@@ -7,6 +7,7 @@ import Login from "./components/form/Login";
 
 // test
 import PlaceSearch from "./pages/test/PlaceSearch";
+import Voting from "./pages/test/Voting";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/test/searchplace" element={<PlaceSearch />} />
+      <Route path="/test/Voting" element={<Voting />} />
     </Routes>
   );
 }

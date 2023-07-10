@@ -19,11 +19,6 @@ app.get("/", (req, res) => {
   res.send(`hello ${databaseName}` + "3");
 });
 
-// const corsOptions = {
-//   origin: "http://localhost:3000",
-//   credentials: true, //access-control-allow-credentials:true
-//   optionSuccessStatus: 200,
-// };
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,9 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 const testRoute = require("./api/routes/testRoute");
 const googleMapsRoute = require("./api/routes/googleMapsRoute");
 const usersRoute = require("./api/routes/usersRoute");
+const votingRoute = require("./api/routes/votingRoute");
+
 app.use("/test", testRoute);
 app.use("/api/googleMaps", googleMapsRoute);
 app.use("/api/users", usersRoute);
+app.use("/api/vote", votingRoute);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server listening on ${PORT}`));
