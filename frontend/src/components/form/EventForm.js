@@ -9,12 +9,12 @@ Users/Hosts will be able to create an event with the following information:
     2. Event Description
 */
 
-const EventForm = ({ title, onSave }) => {
+const EventForm = ({ title, event: initialEvent = {}, onSave }) => {
 
     // Event state
     const [event, setEvent] = useState({
-        name: '',
-        description: '',
+        name: initialEvent.name || '',
+        description: initialEvent.description || '',
         // date: '',
         // time: '',
         // location: '',

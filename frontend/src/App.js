@@ -32,6 +32,15 @@ function App() {
     localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
   };
 
+  // Helper function to update events
+  const handleUpdateEvent = (updatedEvent, index) => {
+    const updatedEventsList = eventsList.map((event, i) =>
+      i === index ? updatedEvent : event
+    );
+    setEventsList(updatedEventsList);
+    localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
+  };
+
   // Load the events data from local storage
   useEffect(() => {
     const storedEventsList = localStorage.getItem("eventsList");
@@ -44,7 +53,7 @@ function App() {
 
     <div className="bg-gray-200 flex flex-col items-center justify-center h-screen">
       <EventForm title="Create Event" onSave={handleSaveEvent} />
-      <EventsList eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} />
+      <EventsList eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} onUpdate={handleUpdateEvent} />
     </div>
 
     // <Routes>

@@ -7,7 +7,7 @@ Utility component to display list of events as cards.
 Users/Hosts should be able to click into each card to reveal more information
 */
 
-const EventsList = ({ eventsList, onDelete, onSave }) => {
+const EventsList = ({ eventsList, onDelete, onSave, onUpdate }) => {
 
     return (
         <div className="mt-10 text-center">
@@ -22,6 +22,7 @@ const EventsList = ({ eventsList, onDelete, onSave }) => {
                                 event={savedEvent}
                                 onDelete={() => onDelete(index)}
                                 onSave={onSave}
+                                onUpdate={(updatedEvent) => onUpdate(updatedEvent, index)}
                             />
                         </li>
                     ))}

@@ -6,7 +6,7 @@ Author: Ryan
 Utility component to render cards.
 */
 
-const Card = ({ event, onDelete, onSave }) => {
+const Card = ({ event, onDelete, onSave, onUpdate }) => {
 
     // Expanded State
     const [expanded, setExpanded] = useState(false);
@@ -35,7 +35,7 @@ const Card = ({ event, onDelete, onSave }) => {
     const handleSaveEvent = (updatedEvent) => {
         setEditedEvent(updatedEvent);
         setEditing(false);
-        onSave(editedEvent);
+        onUpdate(updatedEvent);
     };
 
     return (
@@ -66,7 +66,7 @@ const Card = ({ event, onDelete, onSave }) => {
                 )}
             </div>
             {editing && (
-                <EditEvent event={editedEvent} onSave={onSave} onCancel={handleCancelEdit} editing={editing} />
+                <EditEvent event={editedEvent} onEditSave={handleSaveEvent} onCancel={handleCancelEdit} editing={editing} />
             )}
         </div>
     );

@@ -15,33 +15,20 @@ Hosts will be able to edit the following information:
     Event Comments
 */
 
-const EditEvent = ({ event, onSave, editing }) => {
+const EditEvent = ({ event, onEditSave, onCancel, editing }) => {
 
     // Edited Event State
     const [editedEvent, setEditedEvent] = useState(event);
 
-    // Helper function to handle changes to the edited event state
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEditedEvent((prevEvent) => ({
-            ...prevEvent,
-            [name]: value,
-        }));
-    };
-
     // Helper function to handle save
-    const handleSave = () => {
-        onSave(editedEvent);
-    };
-
-    // Helper function to handle cancel
-    const handleCancel = () => {
-        editing = false;
+    const handleSave = (event) => {
+        onEditSave(event);
     };
 
     return (
         <div className="EditEvent">
             <h2>Edit Event</h2>
+            <EventForm title="Edit Event" event={editedEvent} onSave={handleSave} />
         </div>
     );
 };
