@@ -12,13 +12,13 @@ import Signup from "./pages/Signup";
 
 // test
 import PlaceSearch from "./pages/test/PlaceSearch";
+import MenuPlaceSearch from "./pages/test/MenuPlaceSearch";
 import Voting from "./pages/test/Voting";
 import SignupForm from "./components/form/SignUpForm";
 
 import Header from "./components/layout/Header";
 
 function App() {
-
   /*
   Author: Ryan
   Utility components to handle state of events
@@ -66,12 +66,34 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Access />} />
-        <Route path="/eventform" element={<EventForm title='Create Event' onSave={handleSaveEvent} />} />
-        <Route path="/eventslist" element={<EventsList eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} />} />
-        <Route path="/home" element={<Home eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} />} />
+        <Route
+          path="/eventform"
+          element={<EventForm title="Create Event" onSave={handleSaveEvent} />}
+        />
+        <Route
+          path="/eventslist"
+          element={
+            <EventsList
+              eventsList={eventsList}
+              onDelete={handleDeleteEvent}
+              onSave={handleSaveEvent}
+            />
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <Home
+              eventsList={eventsList}
+              onDelete={handleDeleteEvent}
+              onSave={handleSaveEvent}
+            />
+          }
+        />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/test/searchplace" element={<PlaceSearch />} />
+        <Route path="/test/menusearchplace" element={<MenuPlaceSearch />} />
         <Route path="/test/voting" element={<Voting />} />
       </Routes>
     </div>
