@@ -66,7 +66,7 @@ function Home(props) {
   }, [tabSelect]);
 
   const handleCreateEvent = () => {
-    navigate("/createEvent"); // TODO: front-end route to create event form
+    navigate("/eventform"); // TODO: front-end route to create event form
   };
 
   const handleSignOut = async () => {
@@ -104,7 +104,11 @@ function Home(props) {
 
       <Container className="d-flex justify-content-center">
         <Row className="mt-5 w-25">
-          <Button type="button" className="btn-lg btn-info">
+          <Button
+            type="button"
+            className="btn-lg btn-info"
+            onClick={handleCreateEvent}
+          >
             Host an event
           </Button>
         </Row>
