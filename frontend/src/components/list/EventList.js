@@ -35,7 +35,7 @@ export default function EventList({ isOwnHost, data }) {
               <Row>
                 <Col>{event.event_name}</Col>
                 {isOwnHost ? (
-                  <Col>{event.first_name + event.last_name}</Col>
+                  <Col>{event.firstname + event.lastname}</Col>
                 ) : null}
                 {/* <Col>{event.timeframe}</Col> */}
                 <Col>{event.total_participants}</Col>

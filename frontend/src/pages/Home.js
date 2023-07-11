@@ -32,7 +32,7 @@ function Home(props) {
         let uid = auth.currentUser.uid;
         let response = await axios.get(server.url + `/users/name/${uid}`);
         let data = response.data;
-        setName(data.first_name + " " + data.last_name);
+        setName(data.firstname + " " + data.lastname);
       } catch (err) {
         console.log(err);
       }
