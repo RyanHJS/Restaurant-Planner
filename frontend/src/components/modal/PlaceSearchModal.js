@@ -49,24 +49,6 @@ export default function PlaceSearchModal({ show, onHide, setSelected }) {
         <Modal.Body className="mb-5">
           <PlacesSearchBar setPlace={setPlaceId} />
         </Modal.Body>
-
-        {/* <Modal.Footer className="justify-content-between">
-          <div>
-            <Button
-              className="float-left btn btn-danger"
-              //   onClick={() => {
-              //     handleConfirmDelete(item.recipe_id);
-              //   }}
-            >
-              Delete
-            </Button>
-          </div>
-          <Link to={`/${item.recipe_id}/edit`}>
-            <div>
-              <Button className="float-right">Edit</Button>
-            </div>
-          </Link>
-        </Modal.Footer> */}
       </Modal>
     </>
   );
