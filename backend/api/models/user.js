@@ -14,7 +14,7 @@ module.exports = class User {
 
   async create() {
     let insertInfo = await db.execute(
-      "INSERT INTO users (uid, firstname, lastname, email) VALUES (?, ?, ?, ?)",
+      "INSERT INTO users (uid, first_name, last_name, email) VALUES (?, ?, ?, ?)",
       [this.uid, this.firstname, this.lastname, this.email],
       (err, result) => {
         if (err) throw err;
@@ -25,7 +25,14 @@ module.exports = class User {
 
   static async getAllUsers() {
     return await db.execute(
-      "SELECT uid, firstname, lastname, email FROM users"
+      "SELECT uid, first_name, last_name, email FROM users"
+    );
+  }
+
+  static async getName(hostId) {
+    return await db.execute(
+      "SELECT first_name, last_name FROM users WHERE uid = ?",
+      [hostId]
     );
   }
 
