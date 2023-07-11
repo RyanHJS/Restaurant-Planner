@@ -74,26 +74,3 @@ CREATE TABLE IF NOT EXISTS place_votes (
 
 
 
--- Populate table
--- CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY, name VARCHAR(30));
--- INSERT INTO test (id, name) VALUES (1, 'random name 1');
--- INSERT INTO test (id, name) VALUES (2, 'random name 2');
-
-INSERT INTO users (uid, email, first_name, last_name) VALUES ('9oGAOJpMeCSI10KBqTPx95TA3OF3', 'test@gmail.com', 'tester', 'account' );
-INSERT INTO users (uid, email, first_name, last_name) VALUES ('oAxwJgo0I0PA8oSMJzOYh811Ek32', 'kivinej210@niback.com', 'kivine', 'j210' );
-
-INSERT INTO events (event_name, host_id, duration) VALUES ('Tiff birthday party', '9oGAOJpMeCSI10KBqTPx95TA3OF3', 2 );  -- test@
-INSERT INTO events (event_name, host_id, duration) VALUES ("mike's dinner", 'oAxwJgo0I0PA8oSMJzOYh811Ek32', 5 );        -- kivineh@
-INSERT INTO events (event_name, host_id, duration) VALUES ("travel celebration", 'oAxwJgo0I0PA8oSMJzOYh811Ek32', 3 ); 
-
-
--- kivineh@ hosted
-INSERT INTO participants (event_id, uid) VALUES (1, "9oGAOJpMeCSI10KBqTPx95TA3OF3");
-
--- kivineh@ invited
-INSERT INTO participants (event_id, uid) VALUES (2, "oAxwJgo0I0PA8oSMJzOYh811Ek32");
-INSERT INTO participants (event_id, uid) VALUES (2, "9oGAOJpMeCSI10KBqTPx95TA3OF3");
-
-INSERT INTO participants (event_id, uid) VALUES (3, "oAxwJgo0I0PA8oSMJzOYh811Ek32");
-
-
