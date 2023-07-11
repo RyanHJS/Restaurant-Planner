@@ -3,14 +3,16 @@ import axios from "axios";
 import server from "../../utils/constants/server";
 //user should have picked a event from a list of events in previous page
 //Maybe separate into two pages, one for picking restaurants, one for timeslots
+const uid = "uid2"; //user id for testing
+const eid = "1"; //event id for testing
  async function handleVote(e) {
     try{
         const data = new FormData(e.target);
         let obj = {};
-        obj.pid = data.getAll("pid");
-        obj.timeslot = data.getAll("timeslot");
-        obj.uid = "1234"; //user id
-        obj.eid = "1234"; //event id
+        obj.place_candidates_id = data.getAll("place_candidates_id");
+        obj.time_candidates_id = data.getAll("time_candidates_id");
+        obj.uid = uid; //user id
+        obj.eid = eid; //event id
         await axios({
             method: 'post',
             url: server.url + "/vote",
@@ -34,7 +36,7 @@ export default function Voting() {
             try {
                 await axios({
                     method: 'get',
-                    url: server.url + "/vote/place_candidates"
+                    url: server.url + "/vote/place_candidates/"+ eid
                 }).then((response) => {
                     setPlaceCandidates(response.data);
                 })
@@ -54,7 +56,7 @@ export default function Voting() {
                 setLoading(true);
                 await axios({
                     method: 'get',
-                    url: server.url + "/vote/time_candidates"
+                    url: server.url + "/vote/time_candidates/" + eid
                 }).then((response) => {
                     setTimeCandidates(response.data);
                 });
@@ -73,25 +75,35 @@ export default function Voting() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleVote}>
-                {place_candidates.map((place) => (
-                    <li key={crypto.randomUUID()}>
-                        <label>{place.name}</label>
-                        <input type="checkbox" value={place.pid} name="pid" ></input>
-                        <br/>
-                    </li>
-                ))}
-                {time_candidates.map((timeslot) => (
-                    <li key={crypto.randomUUID()}>
-                        <label>{timeslot}</label>
-                        <input type="checkbox" value={timeslot} name="timeslot" ></input>
-                        <br/>
-                </li>
-                ))}
-                <button>Submit</button>
+        <>
+            <form onSubmit={handleVote} className="text-center">
+                <div className="d-flex justify-content-around" >
+                    <div>
+                        <h2>Restaurants</h2>
+                        {place_candidates.map((place) => (
+                            <li key={crypto.randomUUID()}>
+                                <label>{place.name}</label>
+                                <input type="checkbox" value={place.place_candidates_id} name="place_candidates_id" ></input>
+                                <br/>
+                            </li>
+                        ))}
+                    </div>
+                    <div>
+                        <h2>Timeslots</h2>
+                        {time_candidates.map((timeslot) => (
+                            <li key={crypto.randomUUID()}>
+                                <label>{timeslot.timeslot}</label>
+                                <input type="checkbox" value={timeslot.time_candidates_id} name="time_candidates_id" ></input>
+                                <br/>
+                        </li>
+                        ))}
+                    </div>
+
+                </div>
+
+                <button className="btn btn-primary">Submit</button>
             </form>
-        </div>
+        </>
 
 
     );
