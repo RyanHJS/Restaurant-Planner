@@ -95,7 +95,7 @@ export default function PlacesSearchBar({ setPlace, setVisible }) {
             <>
               <ListGroup>
                 {loading && <div>Loading...</div>}
-                {suggestions.map((suggestion) => {
+                {suggestions.map((suggestion, index) => {
                   const className = suggestion.active
                     ? "suggestion-item--active"
                     : "suggestion-item";
@@ -105,6 +105,7 @@ export default function PlacesSearchBar({ setPlace, setVisible }) {
                     : { backgroundColor: "#ffffff", cursor: "pointer" };
                   return (
                     <ListGroup.Item
+                      key={index}
                       {...getSuggestionItemProps(suggestion, {
                         className,
                         style,
