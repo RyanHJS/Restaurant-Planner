@@ -12,6 +12,7 @@ function Home(props) {
   const handleHostEvent = () => {
     navigate("/createEvent"); // Todo: front-end route to create event form
   };
+
   return (
     <>
       <div className="w-100 bg-primary-subtle">

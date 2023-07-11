@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import TextInput from './TextInput';
+import UtilityButton from '../button/UtilityButton';
 
 /*
 Author: Ryan
-Utility component as an event sign up form.
-Users/Hosts will be able to create an event with the following information:
-    1. Event Name
-    2. Event Description
+Form component for creating a new event
+Receives props from App
+    title - title of the form, can be a creation form or edit form
+    onSave - the created recipe is saved to the localstorage 
+    initialEvent - used to populate form fields with existing values if they exist
+
+Logic:
+    1. event state to store newly entered form values or existing form values
+    2. error state to store error messages with regards to form validation
+    3. handleChange function to update event state when form values change
+    4. handleReset function to reset form values to initialEvent values
+    5. handleSubmit function to validate form values and save to localstorage
 */
 
-const EventForm = ({ title, event: initialEvent = {}, onSave }) => {
+const EventForm = ({ title, onSave, event: initialEvent = {}, }) => {
 
     // Event state
     const [event, setEvent] = useState({
@@ -27,12 +36,12 @@ const EventForm = ({ title, event: initialEvent = {}, onSave }) => {
     const [error, setError] = useState("");
 
     // Load the event data from local storage
-    useEffect(() => {
-        const saved_event = localStorage.getItem('saved_event');
-        if (saved_event) {
-            setEvent(JSON.parse(saved_event));
-        }
-    }, []);
+    // useEffect(() => {
+    //     const saved_event = localStorage.getItem('saved_event');
+    //     if (saved_event) {
+    //         setEvent(JSON.parse(saved_event));
+    //     }
+    // }, []);
 
     // Helper function to handle changes to the event state
     const handleChange = (e) => {
@@ -46,8 +55,8 @@ const EventForm = ({ title, event: initialEvent = {}, onSave }) => {
     // Helper function to handle reset 
     const handleReset = () => {
         setEvent({
-            name: '',
-            description: '',
+            name: initialEvent.name || '',
+            description: initialEvent.description || '',
             // date: '',
             // time: '',
             // location: '',
@@ -75,46 +84,51 @@ const EventForm = ({ title, event: initialEvent = {}, onSave }) => {
     };
 
     return (
-        <div className='mt-10 text-center'>
-            <h2 className="text-2xl mb-4">{title}</h2>
-            <div className="EventForm w-full max-w-lg justify-center">
-                <div className="rounded-lg p-6 bg-white">
-                    <form onSubmit={handleSubmit}>
-                        <TextInput
-                            label="Name"
-                            id="name"
-                            name="name"
-                            value={event.name}
-                            onChange={handleChange}
-                        />
-                        <TextInput
-                            label="Description"
-                            id="description"
-                            name="description"
-                            value={event.description}
-                            onChange={handleChange}
+        <div className='form-group my-5 text-center flex flex-col items-center justify-center'>
+            <h2 className='text-2xl mb-4'>{title}</h2>
+            <div className='form w-full max-w-lg justify-center rounded-lg p-6 bg-white'>
+                <form onSubmit={handleSubmit}>
+                    <TextInput
+                        label="Name"
+                        id="name"
+                        name='name'
+                        value={event.name}
+                        onChange={handleChange}
+                    />
+
+                    <TextInput
+                        label="Description"
+                        id="description"
+                        name='description'
+                        value={event.description}
+                        onChange={handleChange}
+                    />
+
+                    <div className='flex justify-between'>
+                        <UtilityButton
+                            bg_color="bg-blue-500"
+                            text_color='text-white'
+                            hover_color='hover:bg-blue-600'
+                            type='submit'
+                            text='Save'
                         />
 
-                        <div className="flex justify-between">
-                            <button
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                                type="submit"
-                            >
-                                Save
-                            </button>
-                            <button
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-                                type="reset"
-                                onClick={handleReset}
-                            >
-                                Reset
-                            </button>
-                        </div>
+                        <UtilityButton
+                            bg_color="bg-gray-300"
+                            text_color='text-gray-500'
+                            hover_color='hover:bg-gray-400'
+                            type='reset'
+                            onClick={handleReset}
+                            text='Reset'
+                        />
+                    </div>
 
-                        {error && <p className="text-red-500 mt-2">{error}</p>}
-                    </form>
-                </div>
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+
+                </form>
+
             </div>
+
         </div>
     );
 };

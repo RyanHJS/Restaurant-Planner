@@ -3,10 +3,12 @@ import EditEvent from '../EditEvent';
 
 /*
 Author: Ryan
-Utility component to render cards.
+Utility card component
+Receives props from parent components
+Parent components can be a list, etc...
 */
 
-const Card = ({ event, onDelete, onSave, onUpdate }) => {
+const UtilityCard = ({ event, onDelete, onSave, onUpdate }) => {
 
     // Expanded State
     const [expanded, setExpanded] = useState(false);
@@ -72,4 +74,4 @@ const Card = ({ event, onDelete, onSave, onUpdate }) => {
     );
 };
 
-export default Card;
+export default UtilityCard;

@@ -5,13 +5,17 @@ import Home from "./pages/Home";
 import { useEffect, useState } from "react";
 import EventForm from "./components/form/EventForm";
 import EventsList from "./components/EventsList";
-import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Access from "./pages/Access";
+
+import Signup from "./pages/Signup";
 
 // test
 import PlaceSearch from "./pages/test/PlaceSearch";
 import Voting from "./pages/test/Voting";
+import SignupForm from "./components/form/SignUpForm";
+
+import Header from "./components/layout/Header";
 
 function App() {
 
@@ -34,7 +38,8 @@ function App() {
 
   // Helper function to delete events from localstorage
   const handleDeleteEvent = (index) => {
-    const updatedEventsList = eventsList.filter((_, i) => i !== index);
+    const updatedEventsList = [...eventsList];
+    updatedEventsList.splice(index, 1);
     setEventsList(updatedEventsList);
     localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
   };
@@ -57,14 +62,19 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<Access />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/test/searchplace" element={<PlaceSearch />} />
-      <Route path="/test/Voting" element={<Voting />} />
-    </Routes>
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Access />} />
+        <Route path="/eventform" element={<EventForm title='Create Event' onSave={handleSaveEvent} />} />
+        <Route path="/eventslist" element={<EventsList eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/test/searchplace" element={<PlaceSearch />} />
+        <Route path="/test/voting" element={<Voting />} />
+      </Routes>
+    </div>
   );
 }
 
