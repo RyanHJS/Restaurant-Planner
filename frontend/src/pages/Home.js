@@ -3,8 +3,9 @@ import Button from "react-bootstrap/esm/Button";
 import Row from "react-bootstrap/Row";
 
 import { useNavigate } from "react-router-dom";
+import EventsList from "../components/EventsList";
 
-function Home(props) {
+function Home({ eventsList, onDelete, onSave }) {
   const [name, setName] = useState("Tester React");
 
   const navigate = useNavigate();
@@ -25,18 +26,20 @@ function Home(props) {
         </Row>
       </div>
 
-      <div className="d-flex justify-content-center">
+      {/* <div className="d-flex justify-content-center">
         <Row className="mt-5">
           <Button type="button" className="btn btn-info p-3">
             Host an event
           </Button>
         </Row>
-      </div>
+      </div> */}
 
-      <div className="container mt-5">
+      <div className="container mt-5 text-center">
         <h3>My Events</h3>
         {/* TODO: Make a list of events that user has */}
+        <EventsList eventsList={eventsList} onDelete={onDelete} onSave={onSave} />
       </div>
+
     </>
   );
 }

@@ -68,7 +68,7 @@ function App() {
         <Route path="/" element={<Access />} />
         <Route path="/eventform" element={<EventForm title='Create Event' onSave={handleSaveEvent} />} />
         <Route path="/eventslist" element={<EventsList eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Home eventsList={eventsList} onDelete={handleDeleteEvent} onSave={handleSaveEvent} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/test/searchplace" element={<PlaceSearch />} />
