@@ -3,7 +3,7 @@ import React from 'react';
 /*
 Author: Ryan
 Utility component for text input fields
-Receives props from RecipeForm
+Receives props from EventForm
     label - label for the input field (what attribute is being inputted)
     id - id for the input field
     name - name for the input field

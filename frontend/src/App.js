@@ -17,53 +17,71 @@ import SignupForm from "./components/form/SignUpForm";
 
 import Header from "./components/layout/Header";
 
+import axios from 'axios';
+
 function App() {
 
-  /*
-  Author: Ryan
-  Utility components to handle state of events
-  */
+  const serverURL = process.env.REACT_APP_SERVER_URL;
+  const serverPORT = process.env.REACT_APP_SERVER_PORT;
+  const serverAPI = process.env.REACT_APP_SERVER_API;
 
-  // Events state - contains list of events
   const [eventsList, setEventsList] = useState([]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  // Helper function to save events to localstorage
-  const handleSaveEvent = (event) => {
+  const handleSaveEvent = async (event) => {
     if (event.name && event.description) {
-      const updatedEventsList = [...eventsList, event];
-      setEventsList(updatedEventsList);
-      localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
+      try {
+        const saveEvent_url = `${serverURL}:${serverPORT}/${serverAPI}/events`;
+        const response = await axios.post(saveEvent_url, event);
+        console.log("Response data:", response.data); // Log to check received data
+        const updatedRecipeList = [...eventsList, response.data];
+        setEventsList(updatedRecipeList);
+        setShowSuccessMessage(true);
+        setTimeout(() => setShowSuccessMessage(false), 5000);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
-  // Helper function to delete events from localstorage
-  const handleDeleteEvent = (index) => {
-    const updatedEventsList = [...eventsList];
-    updatedEventsList.splice(index, 1);
-    setEventsList(updatedEventsList);
-    localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
+  const handleDeleteEvent = async (id) => {
+    try {
+      const deleteEvent_url = `${serverURL}:${serverPORT}/${serverAPI}/events/${id}`;
+      const response = await axios.delete(deleteEvent_url);
+
+      if (response.status === 200) {
+        const updatedEventsList = eventsList.filter(event => event.event_id !== id);
+        setEventsList(updatedEventsList);
+      } else {
+        throw new Error('Event deletion was not successful');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  // Helper function to update events
-  const handleUpdateEvent = (updatedEvent, index) => {
-    const updatedEventsList = eventsList.map((event, i) =>
-      i === index ? updatedEvent : event
-    );
-    setEventsList(updatedEventsList);
-    localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
-  };
-
-  // Load the events data from local storage
   useEffect(() => {
-    const storedEventsList = localStorage.getItem("eventsList");
-    if (storedEventsList) {
-      setEventsList(JSON.parse(storedEventsList));
-    }
+    const fetchData = async () => {
+      try {
+        const getEvents_url = `${serverURL}:${serverPORT}/${serverAPI}/events`;
+        const response = await axios.get(getEvents_url);
+        setEventsList(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
     <div>
       <Header />
+      {showSuccessMessage &&
+        <div
+          className="px-4 py-2 text-center bg-red-500 text-white rounded-md hover:bg-red-800"
+        >
+          Event Added!
+        </div>}
       <Routes>
         <Route path="/" element={<Access />} />
         <Route path="/eventform" element={<EventForm title='Create Event' onSave={handleSaveEvent} />} />

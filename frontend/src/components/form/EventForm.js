@@ -2,48 +2,15 @@ import React, { useState, useEffect } from 'react';
 import TextInput from './TextInput';
 import UtilityButton from '../button/UtilityButton';
 
-/*
-Author: Ryan
-Form component for creating a new event
-Receives props from App
-    title - title of the form, can be a creation form or edit form
-    onSave - the created recipe is saved to the localstorage 
-    initialEvent - used to populate form fields with existing values if they exist
+const EventForm = ({ title, onSave, event: initialEvent = {} }) => {
 
-Logic:
-    1. event state to store newly entered form values or existing form values
-    2. error state to store error messages with regards to form validation
-    3. handleChange function to update event state when form values change
-    4. handleReset function to reset form values to initialEvent values
-    5. handleSubmit function to validate form values and save to localstorage
-*/
-
-const EventForm = ({ title, onSave, event: initialEvent = {}, }) => {
-
-    // Event state
     const [event, setEvent] = useState({
-        name: initialEvent.name || '',
-        description: initialEvent.description || '',
-        // date: '',
-        // time: '',
-        // location: '',
-        // maxAttendees: '',
-        // tags: '',
-        // comments: '',
+        name: initialEvent.event_name || '',
+        description: initialEvent.event_description || '',
     });
 
-    // Error state
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
-    // Load the event data from local storage
-    // useEffect(() => {
-    //     const saved_event = localStorage.getItem('saved_event');
-    //     if (saved_event) {
-    //         setEvent(JSON.parse(saved_event));
-    //     }
-    // }, []);
-
-    // Helper function to handle changes to the event state
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEvent((prevEvent) => ({
@@ -52,33 +19,23 @@ const EventForm = ({ title, onSave, event: initialEvent = {}, }) => {
         }));
     };
 
-    // Helper function to handle reset 
     const handleReset = () => {
         setEvent({
-            name: initialEvent.name || '',
-            description: initialEvent.description || '',
-            // date: '',
-            // time: '',
-            // location: '',
-            // maxAttendees: '',
-            // tags: '',
-            // host: '',
-            // comments: '',
+            name: initialEvent.event_name || '',
+            description: initialEvent.event_description || '',
         });
     };
 
-    // Helper function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!event.name || !event.description) {
-            setError("Please enter a name and description for your event.");
+            setError('Please enter all fields');
             return;
         }
 
-        setError(""); // Clear the error message if the event is valid
+        setError('');
 
-        localStorage.setItem('saved_event', JSON.stringify(event));
         onSave(event);
         handleReset();
     };
@@ -109,7 +66,8 @@ const EventForm = ({ title, onSave, event: initialEvent = {}, }) => {
                             bg_color="bg-blue-500"
                             text_color='text-white'
                             hover_color='hover:bg-blue-600'
-                            type='submit'
+                            type='button'
+                            onClick={handleSubmit}
                             text='Save'
                         />
 
