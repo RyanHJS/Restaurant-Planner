@@ -3,16 +3,14 @@ import axios from "axios";
 import server from "../../utils/constants/server";
 //user should have picked a event from a list of events in previous page
 //Maybe separate into two pages, one for picking restaurants, one for timeslots
-const uid = "uid2"; //user id for testing
-const eid = "1"; //event id for testing
  async function handleVote(e) {
     try{
         const data = new FormData(e.target);
         let obj = {};
-        obj.place_candidates_id = data.getAll("place_candidates_id");
-        obj.time_candidates_id = data.getAll("time_candidates_id");
-        obj.uid = uid; //user id
-        obj.eid = eid; //event id
+        obj.place_candidates_id = data.getAll("place_candidates_id")
+        obj.time_candidates_id = data.getAll("time_candidates_id")
+        obj.uid = data.get("uid") //user id
+        obj.eid = data.get("eid") //event id
         await axios({
             method: 'post',
             url: server.url + "/vote",
@@ -25,7 +23,7 @@ const eid = "1"; //event id for testing
     }
 }
 
-export default function Voting() {
+export default function Voting({uid, eid}) {
     const [place_candidates, setPlaceCandidates] = useState([]);
     const [time_candidates, setTimeCandidates] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -51,6 +49,7 @@ export default function Voting() {
 
     //request list of timeslots from backend
     useEffect(() => {
+        //Todo: refactor into a service
         async function retrieveTimeInfo() {
             try {
                 setLoading(true);
@@ -76,10 +75,13 @@ export default function Voting() {
 
     return (
         <>
+            <h1 className="text-center">This is the voting page for User id {uid} for event id {eid}</h1>
             <form onSubmit={handleVote} className="text-center">
                 <div className="d-flex justify-content-around" >
+                    <input type="hidden" name="uid" value={uid} />
+                    <input type="hidden" name="eid" value={eid} />
                     <div>
-                        <h2>Restaurants</h2>
+                        <h3>Restaurants</h3>
                         {place_candidates.map((place) => (
                             <li key={crypto.randomUUID()}>
                                 <label>{place.name}</label>
@@ -89,7 +91,7 @@ export default function Voting() {
                         ))}
                     </div>
                     <div>
-                        <h2>Timeslots</h2>
+                        <h3>Timeslots</h3>
                         {time_candidates.map((timeslot) => (
                             <li key={crypto.randomUUID()}>
                                 <label>{timeslot.timeslot}</label>
