@@ -15,6 +15,7 @@ import PlaceSearch from "./pages/test/PlaceSearch";
 import MenuPlaceSearch from "./pages/test/MenuPlaceSearch";
 import Voting from "./pages/test/Voting";
 import SignupForm from "./components/form/SignUpForm";
+import ViewEventVotes from "./pages/test/ViewEventVotes";
 
 import Header from "./components/layout/Header";
 
@@ -94,7 +95,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/test/searchplace" element={<PlaceSearch />} />
         <Route path="/test/menusearchplace" element={<MenuPlaceSearch />} />
-        <Route path="/test/voting" element={<Voting />} />
+        <Route path="/test/voting" element={<Voting uid="uid1" eid={1} />} />
       </Routes>
     </div>
   );
