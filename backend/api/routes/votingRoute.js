@@ -80,5 +80,22 @@ router.get("/time_candidates/:event_id", async (req, res) => {
     }
 );
 
+router.get("/count_place_votes/:place_candidates_id", async (req, res) => {
+    const place_candidates_id = req.params.place_candidates_id;
+    const sql = "SELECT COUNT(*) AS numVotes FROM place_votes Where place_candidates_id = ?"
+    const [row, fields] = await db.execute(sql, [place_candidates_id])
+    // console.log(row);
+    res.send(row[0])
+    }
+);
+
+router.get("/count_time_votes/:time_candidates_id", async (req, res) => {
+    const time_candidates_id = req.params.time_candidates_id;
+    const sql = "SELECT COUNT(*) AS numVotes FROM time_votes Where time_candidates_id = ?"
+    const [row, fields] = await db.execute(sql, [time_candidates_id])
+    res.send(row)
+    }
+);
+
 
 module.exports = router;
