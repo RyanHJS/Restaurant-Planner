@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import TextInput from './TextInput';
 import UtilityButton from '../button/UtilityButton';
 
-const EventForm = ({ title, onSave, event: initialEvent = {} }) => {
+const EventForm = ({ title, onSave, event: initialEvent = {}, uid }) => {
+
+    console.log("uid: ", uid);
 
     const [event, setEvent] = useState({
         name: initialEvent.event_name || '',
         description: initialEvent.event_description || '',
+        host_id: uid,
+        duration: initialEvent.duration || 60,
     });
 
     const [error, setError] = useState('');
@@ -23,6 +27,7 @@ const EventForm = ({ title, onSave, event: initialEvent = {} }) => {
         setEvent({
             name: initialEvent.event_name || '',
             description: initialEvent.event_description || '',
+            duration: initialEvent.duration || 60,
         });
     };
 

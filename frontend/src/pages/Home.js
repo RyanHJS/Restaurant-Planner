@@ -30,7 +30,7 @@ function Home(props) {
     async function retrieveName() {
       try {
         let uid = auth.currentUser.uid;
-        let response = await axios.get(server.url + `/users/name/${uid}`);
+        let response = await axios.get(server.url + `/events/users/${uid}`);
         let data = response.data;
         setName(data.firstname + " " + data.lastname);
       } catch (err) {

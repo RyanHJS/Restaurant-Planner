@@ -13,7 +13,7 @@ exports.getAllEvents = async (req, res) => {
     }
 };
 
-exports.getEvent = async (req, res) => {
+exports.getEventByID = async (req, res) => {
     try {
         const id = req.params.id;
         const [rows] = await db.execute
@@ -28,11 +28,15 @@ exports.getEvent = async (req, res) => {
 };
 
 exports.createEvent = async (req, res) => {
+
     try {
-        const { name, description } = req.body;
+        console.log(`req.body: ${JSON.stringify(req.body)}`);
+        const { name, description, host_id, duration } = req.body;
+        const durationValue = duration !== undefined ? duration : 60; // Use a default value if duration is not provided
+
         const [insertInfo] = await db.execute(
-            "INSERT INTO events (event_name, event_description) VALUES (?, ?)",
-            [name, description]
+            "INSERT INTO events (event_name, event_description, host_id, duration) VALUES (?, ?, ?, ?)",
+            [name, description, host_id, durationValue]
         );
 
         // Get the ID of the inserted event
@@ -57,7 +61,7 @@ exports.createEvent = async (req, res) => {
     }
 };
 
-exports.deleteEvent = async (req, res) => {
+exports.deleteEventByID = async (req, res) => {
     try {
         const { id } = req.params;
         const [result] = await db.execute(
@@ -81,6 +85,21 @@ exports.getAllTables = async (req, res) => {
         const [rows] = await db.execute
             (
                 "SHOW TABLES"
+            );
+        res.send(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+exports.getEventsByUserID = async (req, res) => {
+    try {
+        const uid = req.params.uid;
+
+        const [rows] = await db.execute
+            (
+                "SELECT * FROM events WHERE host_id = ?", [uid]
             );
         res.send(rows);
     } catch (err) {

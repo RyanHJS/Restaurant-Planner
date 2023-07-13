@@ -20,20 +20,24 @@ import ViewEventVotes from "./pages/test/ViewEventVotes";
 import Header from "./components/layout/Header";
 
 import axios from 'axios';
+import { auth } from "./config/firebase";
+import server from "./utils/constants/server";
 
 function App() {
-
-  const serverURL = process.env.REACT_APP_SERVER_URL;
-  const serverPORT = process.env.REACT_APP_SERVER_PORT;
-  const serverAPI = process.env.REACT_APP_SERVER_API;
 
   const [eventsList, setEventsList] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+  let uid = auth.currentUser.uid;
+
   const handleSaveEvent = async (event) => {
+    console.log(`UID: ${uid}`);
+
     if (event.name && event.description) {
+
       try {
-        const saveEvent_url = `${serverURL}:${serverPORT}/${serverAPI}/events`;
+        const saveEvent_url = server.url + `/events`;
+        // Send eventWithUid in the POST request
         const response = await axios.post(saveEvent_url, event);
         console.log("Response data:", response.data); // Log to check received data
         const updatedRecipeList = [...eventsList, response.data];
@@ -48,7 +52,7 @@ function App() {
 
   const handleDeleteEvent = async (id) => {
     try {
-      const deleteEvent_url = `${serverURL}:${serverPORT}/${serverAPI}/events/${id}`;
+      const deleteEvent_url = server.url + `/events/${id}`;
       const response = await axios.delete(deleteEvent_url);
 
       if (response.status === 200) {
@@ -65,7 +69,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const getEvents_url = `${serverURL}:${serverPORT}/${serverAPI}/events`;
+        const getEvents_url = server.url + `/events/`;
         const response = await axios.get(getEvents_url);
         setEventsList(response.data);
       } catch (error) {
@@ -88,7 +92,10 @@ function App() {
         <Route path="/" element={<Access />} />
         <Route
           path="/eventform"
-          element={<EventForm title="Create Event" onSave={handleSaveEvent} />}
+          element={<EventForm
+            title="Create Event"
+            onSave={handleSaveEvent}
+            uid={uid} />}
         />
         <Route
           path="/eventslist"
@@ -97,6 +104,7 @@ function App() {
               eventsList={eventsList}
               onDelete={handleDeleteEvent}
               onSave={handleSaveEvent}
+              uid={uid}
             />
           }
         />
