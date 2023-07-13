@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 
-require("dotenv").config()
+require("dotenv").config();
 
 // // For development only - local
 // const devPool = mysql.createPool({
@@ -49,5 +49,14 @@ const devPool = mysql.createPool({
     connectionLimit: process.env.DB_CONNECTION_LIMIT
 });
 
+// Ryan Test
+// const devPool = mysql.createPool({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'secret',
+//     database: 'restaurant_planner_app',
+//     port: 3307,
+//     connectionLimit: process.env.DB_CONNECTION_LIMIT
+// });
 
 module.exports = devPool.promise();

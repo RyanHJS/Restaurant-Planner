@@ -15,60 +15,102 @@ import PlaceSearch from "./pages/test/PlaceSearch";
 import MenuPlaceSearch from "./pages/test/MenuPlaceSearch";
 import Voting from "./pages/test/Voting";
 import SignupForm from "./components/form/SignUpForm";
+import ViewEventVotes from "./pages/test/ViewEventVotes";
 
 import Header from "./components/layout/Header";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import axios from 'axios';
+import { auth } from "./config/firebase";
+import server from "./utils/constants/server";
 
 function App() {
-  /*
-  Author: Ryan
-  Utility components to handle state of events
-  */
-
-  // Events state - contains list of events
   const [eventsList, setEventsList] = useState([]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  // Helper function to save events to localstorage
-  const handleSaveEvent = (event) => {
+  const [uid, setUid] = useState(null)
+
+//copied from stackoverflow 
+//https://stackoverflow.com/questions/71548631/getting-additional-data-in-firebase-auth-onauthstatechanged
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      setUid(user.uid)
+    } else {
+      setUid(null)
+    }
+  })
+
+  return () => {
+    unsubscribe()
+  }
+}, [])
+
+  const handleSaveEvent = async (event) => {
+    console.log(`UID: ${uid}`);
+
     if (event.name && event.description) {
-      const updatedEventsList = [...eventsList, event];
-      setEventsList(updatedEventsList);
-      localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
+
+      try {
+        const saveEvent_url = server.url + `/events`;
+        // Send eventWithUid in the POST request
+        const response = await axios.post(saveEvent_url, event);
+        console.log("Response data:", response.data); // Log to check received data
+        const updatedRecipeList = [...eventsList, response.data];
+        setEventsList(updatedRecipeList);
+        setShowSuccessMessage(true);
+        setTimeout(() => setShowSuccessMessage(false), 5000);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
-  // Helper function to delete events from localstorage
-  const handleDeleteEvent = (index) => {
-    const updatedEventsList = [...eventsList];
-    updatedEventsList.splice(index, 1);
-    setEventsList(updatedEventsList);
-    localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
+  const handleDeleteEvent = async (id) => {
+    try {
+      const deleteEvent_url = server.url + `/events/${id}`;
+      const response = await axios.delete(deleteEvent_url);
+
+      if (response.status === 200) {
+        const updatedEventsList = eventsList.filter(event => event.event_id !== id);
+        setEventsList(updatedEventsList);
+      } else {
+        throw new Error('Event deletion was not successful');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  // Helper function to update events
-  const handleUpdateEvent = (updatedEvent, index) => {
-    const updatedEventsList = eventsList.map((event, i) =>
-      i === index ? updatedEvent : event
-    );
-    setEventsList(updatedEventsList);
-    localStorage.setItem("eventsList", JSON.stringify(updatedEventsList));
-  };
-
-  // Load the events data from local storage
   useEffect(() => {
-    const storedEventsList = localStorage.getItem("eventsList");
-    if (storedEventsList) {
-      setEventsList(JSON.parse(storedEventsList));
-    }
+    const fetchData = async () => {
+      try {
+        const getEvents_url = server.url + `/events/`;
+        const response = await axios.get(getEvents_url);
+        setEventsList(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
     <div>
       <Header />
+      {showSuccessMessage &&
+        <div
+          className="px-4 py-2 text-center bg-red-500 text-white rounded-md hover:bg-red-800"
+        >
+          Event Added!
+        </div>}
       <Routes>
         <Route path="/" element={<Access />} />
         <Route
           path="/eventform"
-          element={<EventForm title="Create Event" onSave={handleSaveEvent} />}
+          element={<EventForm
+            title="Create Event"
+            onSave={handleSaveEvent}
+            uid={uid} />}
         />
         <Route
           path="/eventslist"
@@ -77,6 +119,7 @@ function App() {
               eventsList={eventsList}
               onDelete={handleDeleteEvent}
               onSave={handleSaveEvent}
+              uid={uid}
             />
           }
         />
@@ -94,7 +137,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/test/searchplace" element={<PlaceSearch />} />
         <Route path="/test/menusearchplace" element={<MenuPlaceSearch />} />
-        <Route path="/test/voting" element={<Voting />} />
+        <Route path="/test/voting" element={<Voting uid={uid} eid={1} />} />
       </Routes>
     </div>
   );

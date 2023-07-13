@@ -20,7 +20,7 @@ const EventsList = ({ eventsList, onDelete, onSave }) => {
                             <li key={index}>
                                 <UtilityCard
                                     event={event}
-                                    onDelete={() => onDelete(index)}
+                                    onDelete={() => onDelete(event.event_id)}
                                     onSave={onSave}
                                 />
                             </li>
