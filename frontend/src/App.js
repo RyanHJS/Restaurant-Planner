@@ -18,7 +18,7 @@ import SignupForm from "./components/form/SignUpForm";
 import ViewEventVotes from "./pages/test/ViewEventVotes";
 
 import Header from "./components/layout/Header";
-
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import axios from 'axios';
 import { auth } from "./config/firebase";
 import server from "./utils/constants/server";
@@ -28,7 +28,23 @@ function App() {
   const [eventsList, setEventsList] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  let uid = auth.currentUser.uid;
+  const [uid, setUid] = useState(null)
+
+//copied from stackoverflow 
+//https://stackoverflow.com/questions/71548631/getting-additional-data-in-firebase-auth-onauthstatechanged
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      setUid(user.uid)
+    } else {
+      setUid(null)
+    }
+  })
+
+  return () => {
+    unsubscribe()
+  }
+}, [])
 
   const handleSaveEvent = async (event) => {
     console.log(`UID: ${uid}`);
@@ -122,7 +138,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/test/searchplace" element={<PlaceSearch />} />
         <Route path="/test/menusearchplace" element={<MenuPlaceSearch />} />
-        <Route path="/test/voting" element={<Voting uid="uid1" eid={1} />} />
+        <Route path="/test/voting" element={<Voting uid={uid} eid={1} />} />
       </Routes>
     </div>
   );

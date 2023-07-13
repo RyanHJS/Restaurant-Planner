@@ -21,15 +21,33 @@ function Home(props) {
   const [name, setName] = useState("");
   const [user, setUser] = useState();
   const [events, setEvents] = useState([]);
-
   const navigate = useNavigate();
-
   const [tabSelect, setTabSelect] = useState(DEFAULT_TAB_SELECTION);
+  const [uid, setUid] = useState(null)
+
+
+//copied from stackoverflow 
+//https://stackoverflow.com/questions/71548631/getting-additional-data-in-firebase-auth-onauthstatechanged
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      setUid(user.uid)
+    } else {
+      setUid(null)
+    }
+  })
+
+  return () => {
+    unsubscribe()
+  }
+}, [])
+
+
 
   useEffect(() => {
     async function retrieveName() {
       try {
-        let uid = auth.currentUser.uid;
         let response = await axios.get(server.url + `/events/users/${uid}`);
         let data = response.data;
         setName(data.firstname + " " + data.lastname);

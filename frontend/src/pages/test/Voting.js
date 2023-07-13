@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import server from "../../utils/constants/server";
+import { auth } from "../../config/firebase";
+import { v1 as uuidv1 } from 'uuid';
 //user should have picked a event from a list of events in previous page
 //Maybe separate into two pages, one for picking restaurants, one for timeslots
  async function handleVote(e) {
@@ -27,6 +29,7 @@ export default function Voting({uid, eid}) {
     const [place_candidates, setPlaceCandidates] = useState([]);
     const [time_candidates, setTimeCandidates] = useState([]);
     const [loading, setLoading] = useState(false);
+    console.log("uid: " + uid);
     //request list of restaurants from backend
     useEffect(() => {
         async function retrieveRestaurantInfo() {
@@ -34,7 +37,7 @@ export default function Voting({uid, eid}) {
             try {
                 await axios({
                     method: 'get',
-                    url: server.url + "/vote/place_candidates/"+ eid
+                    url: 'https://restaurant-planner-app-image-atze4udsha-uc.a.run.app/api' + "/vote/place_candidates/"+ eid
                 }).then((response) => {
                     setPlaceCandidates(response.data);
                 })
@@ -55,7 +58,7 @@ export default function Voting({uid, eid}) {
                 setLoading(true);
                 await axios({
                     method: 'get',
-                    url: server.url + "/vote/time_candidates/" + eid
+                    url: 'https://restaurant-planner-app-image-atze4udsha-uc.a.run.app/api' + "/vote/time_candidates/" + eid
                 }).then((response) => {
                     setTimeCandidates(response.data);
                 });
@@ -83,7 +86,7 @@ export default function Voting({uid, eid}) {
                     <div>
                         <h3>Restaurants</h3>
                         {place_candidates.map((place) => (
-                            <li key={crypto.randomUUID()}>
+                            <li key={uuidv1()}>
                                 <label>{place.name}</label>
                                 <input type="checkbox" value={place.place_candidates_id} name="place_candidates_id" ></input>
                                 <br/>
@@ -93,7 +96,7 @@ export default function Voting({uid, eid}) {
                     <div>
                         <h3>Timeslots</h3>
                         {time_candidates.map((timeslot) => (
-                            <li key={crypto.randomUUID()}>
+                            <li key={uuidv1()}>
                                 <label>{timeslot.timeslot}</label>
                                 <input type="checkbox" value={timeslot.time_candidates_id} name="time_candidates_id" ></input>
                                 <br/>
