@@ -5,8 +5,9 @@ const db = require("../../config/database");
  */
 
 module.exports = class Event {
-  constructor(eventName, hostId, duration) {
+  constructor(eventName, eventDescription, hostId, duration) {
     this.eventName = eventName;
+    this.eventDescription = eventDescription;
     this.hostId = hostId;
     this.duration = duration;
   }
@@ -14,8 +15,8 @@ module.exports = class Event {
   // Returns the event_id (that is created by the database)
   async create() {
     let insertInfo = await db.execute(
-      "INSERT INTO events (event_name, host_id, duration) VALUES (?, ?, ?)",
-      [this.eventName, this.hostId, this.duration],
+      "INSERT INTO events (event_name, event_description, event_d host_id, duration) VALUES (?, ?, ?, ?)",
+      [this.eventName, this.eventDescription, this.hostId, this.duration],
       (err, result) => {
         if (err) throw err;
       }

@@ -16,4 +16,12 @@ router.get(
   eventsController.getHostedEventsNTotalParticipants
 );
 
+
+router.get("", eventsController.getAllEvents);
+router.get("/:id", eventsController.getEventByID);
+router.post("", eventsController.createEvent);
+router.delete("/:id", eventsController.deleteEventByID);
+router.get("/:uid", eventsController.getEventsByUserID);
+
+
 module.exports = router;

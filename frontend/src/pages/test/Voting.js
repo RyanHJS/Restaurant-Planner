@@ -5,8 +5,6 @@ import { auth } from "../../config/firebase";
 import { v1 as uuidv1 } from 'uuid';
 //user should have picked a event from a list of events in previous page
 //Maybe separate into two pages, one for picking restaurants, one for timeslots
-const uid = "uid2"; //user id for testing
-const eid = "1"; //event id for testing
  async function handleVote(e) {
     try{
         const data = new FormData(e.target);
