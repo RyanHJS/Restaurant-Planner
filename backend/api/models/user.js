@@ -29,6 +29,13 @@ module.exports = class User {
     );
   }
 
+  static async getName(hostId) {
+    return await db.execute(
+      "SELECT firstname, lastname FROM users WHERE uid = ?",
+      [hostId]
+    );
+  }
+
   // static async getAllEventsByHostUid(hostUid) {
   //   return await db.execute(
   //     "SELECT event_id, event_name, firstname, lastname FROM events INNER JOIN users ON events.host_uid = users.uid WHERE users.uid = ?",

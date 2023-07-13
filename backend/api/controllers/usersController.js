@@ -31,3 +31,14 @@ exports.getUsers = async (req, res) => {
     res.sendStatus(400);
   }
 };
+
+exports.getName = async (req, res) => {
+  try {
+    let uid = req.params.uid;
+    const [rows, fieldData] = await User.getName(uid);
+    res.send(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(400);
+  }
+};

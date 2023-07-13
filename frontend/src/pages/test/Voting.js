@@ -7,10 +7,10 @@ import server from "../../utils/constants/server";
     try{
         const data = new FormData(e.target);
         let obj = {};
-        obj.pid = data.getAll("pid");
-        obj.timeslot = data.getAll("timeslot");
-        obj.uid = "1234"; //user id
-        obj.eid = "1234"; //event id
+        obj.place_candidates_id = data.getAll("place_candidates_id")
+        obj.time_candidates_id = data.getAll("time_candidates_id")
+        obj.uid = data.get("uid") //user id
+        obj.eid = data.get("eid") //event id
         await axios({
             method: 'post',
             url: server.url + "/vote",
@@ -23,7 +23,7 @@ import server from "../../utils/constants/server";
     }
 }
 
-export default function Voting() {
+export default function Voting({uid, eid}) {
     const [place_candidates, setPlaceCandidates] = useState([]);
     const [time_candidates, setTimeCandidates] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function Voting() {
             try {
                 await axios({
                     method: 'get',
-                    url: server.url + "/vote/place_candidates"
+                    url: server.url + "/vote/place_candidates/"+ eid
                 }).then((response) => {
                     setPlaceCandidates(response.data);
                 })
@@ -49,12 +49,13 @@ export default function Voting() {
 
     //request list of timeslots from backend
     useEffect(() => {
+        //Todo: refactor into a service
         async function retrieveTimeInfo() {
             try {
                 setLoading(true);
                 await axios({
                     method: 'get',
-                    url: server.url + "/vote/time_candidates"
+                    url: server.url + "/vote/time_candidates/" + eid
                 }).then((response) => {
                     setTimeCandidates(response.data);
                 });
@@ -73,25 +74,38 @@ export default function Voting() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleVote}>
-                {place_candidates.map((place) => (
-                    <li key={crypto.randomUUID()}>
-                        <label>{place.name}</label>
-                        <input type="checkbox" value={place.pid} name="pid" ></input>
-                        <br/>
-                    </li>
-                ))}
-                {time_candidates.map((timeslot) => (
-                    <li key={crypto.randomUUID()}>
-                        <label>{timeslot}</label>
-                        <input type="checkbox" value={timeslot} name="timeslot" ></input>
-                        <br/>
-                </li>
-                ))}
-                <button>Submit</button>
+        <>
+            <h1 className="text-center">This is the voting page for User id {uid} for event id {eid}</h1>
+            <form onSubmit={handleVote} className="text-center">
+                <div className="d-flex justify-content-around" >
+                    <input type="hidden" name="uid" value={uid} />
+                    <input type="hidden" name="eid" value={eid} />
+                    <div>
+                        <h3>Restaurants</h3>
+                        {place_candidates.map((place) => (
+                            <li key={crypto.randomUUID()}>
+                                <label>{place.name}</label>
+                                <input type="checkbox" value={place.place_candidates_id} name="place_candidates_id" ></input>
+                                <br/>
+                            </li>
+                        ))}
+                    </div>
+                    <div>
+                        <h3>Timeslots</h3>
+                        {time_candidates.map((timeslot) => (
+                            <li key={crypto.randomUUID()}>
+                                <label>{timeslot.timeslot}</label>
+                                <input type="checkbox" value={timeslot.time_candidates_id} name="time_candidates_id" ></input>
+                                <br/>
+                        </li>
+                        ))}
+                    </div>
+
+                </div>
+
+                <button className="btn btn-primary">Submit</button>
             </form>
-        </div>
+        </>
 
 
     );
