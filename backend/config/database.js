@@ -40,22 +40,23 @@ require("dotenv").config();
 
 
 // For development only - local
-// const devPool = mysql.createPool({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     database: process.env.DB_DATABASE,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT,
-//     connectionLimit: process.env.DB_CONNECTION_LIMIT
-// });
-
 const devPool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'secret',
-    database: 'restaurant_planner_app',
-    port: 3307,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
     connectionLimit: process.env.DB_CONNECTION_LIMIT
 });
 
-module.exports = devPool.promise();
+// Ryan Test
+// const devPool = mysql.createPool({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'secret',
+//     database: 'restaurant_planner_app',
+//     port: 3307,
+//     connectionLimit: process.env.DB_CONNECTION_LIMIT
+// });
+
+// module.exports = devPool.promise();
