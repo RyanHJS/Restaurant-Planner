@@ -9,7 +9,6 @@ CREATE DATABASE IF NOT EXISTS restaurant_planner_app;
 
 USE restaurant_planner_app;
 
-
 CREATE TABLE IF NOT EXISTS users (
     uid VARCHAR(128),
     email VARCHAR(255),
@@ -85,7 +84,7 @@ INSERT INTO test (id, name) VALUES (1, 'random name 1');
 INSERT INTO test (id, name) VALUES (2, 'random name 2');
 INSERT INTO users (uid, email, firstname, lastname) VALUES ("uid1", "test1@test.com", "test_first_name", "test_last_name");
 INSERT INTO users (uid, email, firstname, lastname) VALUES ("uid2", "test2@test.com", "test_first_name2", "test_last_name2");
-INSERT INTO events (event_id, event_name, host_id, duration) VALUES (1, "test_event_name", "uid1", 60);
+INSERT INTO events (event_id, event_name, event_description) VALUES (1, "test_event_name", "some description");
 INSERT INTO restaurants (place_id, name, address, rating) VALUES ("place_id1", "test_restaurant_name", "test_restaurant_address", 4.5 );
 INSERT INTO restaurants (place_id, name, address, rating) VALUES ("place_id2", "test_restaurant_name2", "test_restaurant_address2", 4.0);
 INSERT INTO participants (event_id, uid) VALUES (1, "uid1");
